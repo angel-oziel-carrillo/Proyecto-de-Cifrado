@@ -1,0 +1,137 @@
+*{
+box-sizing: border-box;
+}
+
+body {
+margin: 0;
+font-family: Arial, sans-serif;
+background: #150029;
+color: #e2e8f0;
+}
+
+.container {
+width: min(1000px, 95%);
+margin: 30px auto;
+}
+
+h1 {
+text-align: center;
+color: #ab1de4;
+}
+
+.card {
+background: #2a1e3b;
+padding: 25px;
+margin-bottom: 20px;
+border-radius: 12px;
+box-shadow: 0 5px 20px rgba(0, 0, 0, .25);
+}
+
+label {
+display: block;
+margin-top: 15px;
+margin-bottom: 7px;
+font-weight: bold;
+}
+
+textarea,
+input,
+select {
+width: 100%;
+padding: 12px;
+border: 1px solid #475569;
+border-radius: 7px;
+background: #150029;
+color: white;
+font-size: 16px;
+}
+
+textarea {
+min-height: 120px;
+resize: vertical;
+}
+
+button {
+margin-top: 15px;
+padding: 12px 20px;
+border: none;
+border-radius: 7px;
+cursor: pointer;
+font-size: 16px;
+font-weight: bold;
+margin-right: 8px;
+}
+
+.btn-cifrar {
+background: #d1ab00;
+color: white;
+}
+
+.btn-descifrar {
+background: #d1ab00;
+color: white;
+}
+
+.btn-limpiar {
+background: #d1ab00;
+color: white;
+}
+
+button:hover {
+opacity: .85;
+}
+
+.resultado {
+margin-top: 20px;
+padding: 15px;
+background: #020617;
+border-radius: 8px;
+border-left: 4px solid #ab1de4;
+}
+
+.candidato {
+margin-top: 15px;
+padding: 18px;
+background: #150029;
+border-radius: 8px;
+border: 1px solid #334155;
+}
+
+.candidato h3 {
+margin-top: 0;
+color: #ab1de4;
+}
+
+.puntuacion {
+color: #d1ab00;
+font-weight: bold;
+}
+
+.info {
+color: #94a3b8;
+font-size: 14px;
+}
+
+.estado {
+margin-top: 15px;
+padding: 10px;
+border-radius: 6px;
+display: none;
+}
+
+.exito {
+display: block;
+background: #14532d;
+color: #bbf7d0;
+}
+
+.error {
+display: block;
+background: #7f1d1d;
+color: #fecaca;
+}
+
+.codigo {
+font-family: Consolas, monospace;
+word-break: break-word;
+}

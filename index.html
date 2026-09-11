@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrado César y Atbash</title>
+    <link rel="stylesheet" href="estilos.css">
+    <script src="script.js" defer></script> 
+</head>
+<body>
+    <div class="container">
+        <h1>Cifrado César y Atbash</h1>
+
+        <div class="card">
+            <h2>Configuración</h2>
+
+            <p class="info">
+                Define el conjunto de caracteres que utilizará el sistema.
+                Puedes utilizar caracteres ASCII y Unicode.
+                No debe contener caracteres repetidos.
+            </p>
+
+            <label for="alfabeto">
+                Conjunto de caracteres
+            </label>
+
+            <input type="text" id="alfabeto" value="abcdefghijklmnñopqrstuvwxyz">
+
+            <label for="metodo">Método para cifrar</label>
+
+            <select id="metodo" onchange="mostrarModulo()">
+                <option value="cesar">César</option>
+                <option value="atbash">Atbash</option>
+            </select>
+
+            <div id="contenedorModulo">
+                <label for="modulo">Módulo</label>
+                <input type="number" id="modulo" value="3">
+            </div>
+        </div>
+
+
+        <div class="card">
+            <h2>Texto</h2>
+
+            <p class="info">
+                Para cifrar, introduce el texto original.
+                Para descifrar, introduce únicamente el texto cifrado.
+            </p>
+
+            <textarea id="texto" placeholder="Escribe o pega el texto aquí"></textarea>
+
+            <button class="btn-cifrar" onclick="cifrar()">Cifrar</button>
+
+            <button class="btn-descifrar" onclick="descifrarAutomaticamente()">Descifrar</button>
+
+            <button class="btn-limpiar" onclick="limpiar()">Limpiar</button>
+
+            <div id="estado" class="estado"></div>
+        </div>
+
+        <div class="card">
+            <h2>Resultado</h2>
+
+            <textarea id="resultado" readonly placeholder="Aquí aparecerá el resultado"></textarea>
+
+            <div id="informacion"></div>
+        </div>
+    </div> 
+</body>
+</html>
