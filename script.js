@@ -1,7 +1,9 @@
 //1
 function obtenerAlfabeto() {
+    const texto = document.getElementById("alfabeto").value.normalize("NFC");
+    const segmentador = new Intl.Segmenter(undefined, { granularity: "grapheme" });
     return Array.from(
-        document.getElementById("alfabeto").value.normalize("NFC")
+        segmentador.segment(texto), segmento => segmento.segment
     );
 }
 
@@ -16,27 +18,26 @@ function validarAlfabeto(alfabeto) {
     }
 
     const conjunto = new Set();
-
+    
     for (const caracter of alfabeto) {
-        const clave = caracter.toLowerCase();
-
-        if (conjunto.has(clave)) {
+        if (conjunto.has(caracter)) {
             console.log("REPETIDO:", {
                 caracter,
-                clave,
                 codigo: [...caracter].map(
                     c => c.codePointAt(0).toString(16)
                 )
             });
 
-            mostrarEstado("El conjunto de caracteres no puede contener caracteres repetidos.",
+            mostrarEstado(
+                "El conjunto de caracteres no puede contener caracteres repetidos.",
                 false
             );
             return false;
         }
 
-        conjunto.add(clave);
+        conjunto.add(caracter);
     }
+
     return true;
 }
 
@@ -46,7 +47,12 @@ function normalizarModulo(modulo, longitud) {
 }
 
 //4
-function conservarMayusculas(caracter, nuevoCaracter) {
+/*
+function conservarMayusculas(caracter, nuevoCaracter, alfabeto) {
+    if (alfabeto.includes(nuevoCaracter)) {
+        return nuevoCaracter;
+    }
+
     const mayuscula = caracter.toUpperCase();
     const minuscula = caracter.toLowerCase();
 
@@ -65,19 +71,43 @@ function conservarMayusculas(caracter, nuevoCaracter) {
     }
 
     return nuevoCaracter;
+}*/
+
+function buscarCaracter(caracter, alfabeto) {
+    const posicion = alfabeto.indexOf(caracter);
+    if (posicion !== -1) {
+        return posicion;
+    }
+
+    const posicionMayuscula = alfabeto.indexOf(caracter.toUpperCase());
+    if (posicionMayuscula !== -1) {
+        return posicionMayuscula;
+    }
+
+    const posicionMinuscula = alfabeto.indexOf(caracter.toLowerCase());
+    if (posicionMinuscula !== -1) {
+        return posicionMinuscula;
+    }
+
+    return -1;
 }
 
 //5
 function cifrarCesar(texto, alfabeto, modulo) {
     let resultado = "";
+    const segmentador = new Intl.Segmenter(undefined, {granularity: "grapheme"});
+    let cadenaTexto = Array.from(
+        segmentador.segment(texto),
+        segmento => segmento.segment
+    );
 
     modulo = normalizarModulo(
         modulo,
         alfabeto.length
     );
 
-    for (const caracter of Array.from(texto)) {
-        const posicion = alfabeto.map(c => c.toLowerCase()).indexOf(caracter.toLowerCase());
+    for (const caracter of cadenaTexto) {
+        const posicion = buscarCaracter(caracter, alfabeto);
 
         if (posicion === -1) {
             resultado += caracter;
@@ -86,10 +116,7 @@ function cifrarCesar(texto, alfabeto, modulo) {
 
         const nuevaPosicion = (posicion + modulo) % alfabeto.length;
 
-        let nuevoCaracter = alfabeto[nuevaPosicion];
-
-        nuevoCaracter = conservarMayusculas(caracter, nuevoCaracter);
-        resultado += nuevoCaracter;
+        resultado += alfabeto[nuevaPosicion];
     }
     return resultado;
 }
@@ -106,9 +133,14 @@ function descifrarCesar(texto, alfabeto, modulo) {
 //7
 function atbash(texto, alfabeto) {
     let resultado = "";
+    const segmentador = new Intl.Segmenter(undefined, {granularity: "grapheme"});
+    let cadenaTexto = Array.from(
+        segmentador.segment(texto),
+        segmento => segmento.segment
+    );
 
-    for (const caracter of Array.from(texto)) {
-        const posicion = alfabeto.map(c => c.toLowerCase()).indexOf(caracter.toLowerCase());
+    for (const caracter of cadenaTexto) {
+        const posicion = buscarCaracter(caracter, alfabeto);
 
         if (posicion === -1) {
             resultado += caracter;
@@ -117,10 +149,7 @@ function atbash(texto, alfabeto) {
 
         const nuevaPosicion = alfabeto.length - 1 - posicion;
 
-        let nuevoCaracter = alfabeto[nuevaPosicion];
-
-        nuevoCaracter = conservarMayusculas(caracter, nuevoCaracter);
-        resultado += nuevoCaracter;
+        resultado += alfabeto[nuevaPosicion];
     }
     return resultado;
 }
@@ -614,6 +643,18 @@ function descifrarAutomaticamente() {
 function mostrarCandidatos(candidatos) {
     const informacion = document.getElementById("informacion");
     let html = "";
+    let texto = document.getElementById("texto").value;
+
+    const segmentador = new Intl.Segmenter(undefined, {granularity: "grapheme"});
+    const cantidadCaracteres = Array.from(segmentador.segment(texto)).length;
+
+    if (cantidadCaracteres <= 25) {
+    html += `
+        <div class="advertencia">
+            El texto es muy corto, por lo que el descifrado puede ser poco preciso.
+        </div>
+    `;
+}
 
     candidatos.forEach((candidato, indice) => {
         html += `
@@ -712,7 +753,7 @@ function mostrarEstado(mensaje, correcto) {
     estado.className = "estado " + (correcto ? "exito" : "error");
 }
 
-//3
+//33
 function limpiar() {
     document.getElementById("texto").value = "";
     document.getElementById("resultado").value = "";
